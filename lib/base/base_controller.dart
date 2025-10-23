@@ -83,6 +83,7 @@ abstract class BaseController extends GetxController {
       await storageManager.setHiveObject<Recipe>(recipesBox, key, updatedRecipe);
     }
   }
+
   Future<List<Recipe>> getFavorites() async {
     return await storageManager.getAllHiveObjects<Recipe>(favoritesBox);
   }

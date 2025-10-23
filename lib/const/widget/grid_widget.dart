@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../app/data/model/recipes.dart';
+import '../../app/routes/app_pages.dart';
 import '../style/style.dart';
 import 'image_widget.dart';
 
@@ -35,7 +37,10 @@ class GridWidget extends StatelessWidget {
               ),
               elevation: 3,
               child: InkWell(
-                onTap: () {},
+                onTap: () => Get.toNamed(
+                  Routes.RECIPE_DETAIL,
+                  arguments: recipe,
+                ),
                 child: Column(
                   spacing: 8,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,7 +72,7 @@ class GridWidget extends StatelessWidget {
               bottom: 4,
               right: 4,
               child: IconButton(
-                onPressed:  () => onToggleFavorite(recipe),
+                onPressed: () => onToggleFavorite(recipe),
                 icon: Icon(
                   Icons.favorite,
                   color: recipe.isFavorite == true ? Colors.red : Colors.grey,

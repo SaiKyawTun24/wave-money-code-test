@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
 import '../../../../const/widget/grid_widget.dart';
 import '../../../../const/widget/loading.dart';
 import '../../../../const/widget/my_text_field.dart';

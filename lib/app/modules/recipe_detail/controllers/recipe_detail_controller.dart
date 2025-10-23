@@ -1,23 +1,17 @@
 import 'package:get/get.dart';
+import 'package:wave_money_code_test/app/data/model/recipes.dart';
+import 'package:wave_money_code_test/base/base_controller.dart';
 
-class RecipeDetailController extends GetxController {
-  //TODO: Implement RecipeDetailController
+class RecipeDetailController extends BaseController {
+  late Recipe recipe;
 
-  final count = 0.obs;
   @override
   void onInit() {
+    recipe = Get.arguments;
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  isFavorite(Recipe recipe) async {
+    await toggleFavorite(recipe);
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
