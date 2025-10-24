@@ -42,14 +42,11 @@ class RecipeDetailView extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: subtitleTextStyle,
                       ),
-                      IconButton(
-                        onPressed: () => controller.isFavorite(recipe),
-                        icon: Icon(
-                          Icons.favorite,
-                          color: recipe.isFavorite == true
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
+                      Icon(
+                        Icons.favorite,
+                        color: recipe.isFavorite == true
+                            ? Colors.red
+                            : Colors.grey,
                       ),
                     ],
                   ),

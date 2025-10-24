@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wave_money_code_test/app/modules/home/controllers/home_controller.dart';
 import 'package:wave_money_code_test/base/base_controller.dart';
 
 import '../../../data/model/recipes.dart';
@@ -19,6 +20,7 @@ class FavoriteController extends BaseController {
     super.onInit();
   }
 
+
   Future<void> loadFavorites() async {
     try {
       final favorites = await getFavorites();
@@ -33,5 +35,6 @@ class FavoriteController extends BaseController {
   isFavorite(Recipe recipe) async {
     await toggleFavorite(recipe);
     await loadFavorites();
+    Get.find<HomeController>().loadFromCache(showError: false);
   }
 }

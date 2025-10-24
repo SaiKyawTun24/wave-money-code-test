@@ -9,19 +9,18 @@ import '../app/data/model/recipes.dart';
 import '../app/data/repository/repository.dart';
 import 'error_handle.dart';
 
-
 abstract class BaseController extends GetxController {
   final Repository repository = Get.find(tag: (Repository).toString());
   final StorageManager storageManager = StorageManagerImpl();
   var isLoading = false.obs;
 
   dynamic callDataService<T>(
-      Future<T> future, {
-        Function(MyDioException exception)? onError,
-        Function(T response)? onSuccess,
-        Function? onStart,
-        Function? onComplete,
-      }) async {
+    Future<T> future, {
+    Function(MyDioException exception)? onError,
+    Function(T response)? onSuccess,
+    Function? onStart,
+    Function? onComplete,
+  }) async {
     MyDioException? exception;
 
     onStart == null ? isLoading.value = false : onStart();
@@ -61,14 +60,15 @@ abstract class BaseController extends GetxController {
 
   Future<void> toggleFavorite(Recipe recipe) async {
     final key = recipe.id.toString();
-    final isCurrentlyFavorite = await storageManager.getHiveObject<Recipe>(favoritesBox, key) != null;
+    final isCurrentlyFavorite =
+        await storageManager.getHiveObject<Recipe>(favoritesBox, key) != null;
     if (isCurrentlyFavorite) {
-
       await storageManager.remove(favoritesBox, key);
       debugPrint('Removed ${recipe.title} from favorites.');
     } else {
       final favoriteRecipe = recipe.copyWith(isFavorite: true);
-      await storageManager.setHiveObject<Recipe>(favoritesBox, key, favoriteRecipe);
+      await storageManager.setHiveObject<Recipe>(
+          favoritesBox, key, favoriteRecipe);
       debugPrint('Added ${recipe.title} to favorites.');
     }
     await _updateMainCacheStatus(recipe.id!, !isCurrentlyFavorite);
@@ -76,12 +76,15 @@ abstract class BaseController extends GetxController {
 
   Future<void> _updateMainCacheStatus(int recipeId, bool isFavorite) async {
     final key = recipeId.toString();
-    final cachedRecipe = await storageManager.getHiveObject<Recipe>(recipesBox, key);
+    final cachedRecipe =
+        await storageManager.getHiveObject<Recipe>(recipesBox, key);
 
     if (cachedRecipe != null) {
       final updatedRecipe = cachedRecipe.copyWith(isFavorite: isFavorite);
-      await storageManager.setHiveObject<Recipe>(recipesBox, key, updatedRecipe);
+      await storageManager.setHiveObject<Recipe>(
+          recipesBox, key, updatedRecipe);
     }
+    update();
   }
 
   Future<List<Recipe>> getFavorites() async {

@@ -4,6 +4,7 @@ import 'package:wave_money_code_test/base/base_controller.dart';
 
 class RecipeDetailController extends BaseController {
   late Recipe recipe;
+  var isFavoriteStatus = false.obs;
 
   @override
   void onInit() {
@@ -11,7 +12,4 @@ class RecipeDetailController extends BaseController {
     super.onInit();
   }
 
-  isFavorite(Recipe recipe) async {
-    await toggleFavorite(recipe);
-  }
 }

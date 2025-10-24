@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:wave_money_code_test/app/modules/favorite/controllers/favorite_controller.dart';
 import 'package:wave_money_code_test/base/base_controller.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../data/model/recipes.dart';
 import '../../../data/repository/repository_impl.dart';
 
 class HomeController extends BaseController {
-
   final Connectivity _connectivity = Connectivity();
 
   final _recipeResult = <Recipe>[].obs;
@@ -41,17 +41,23 @@ class HomeController extends BaseController {
     }
   }
 
-  onSearch(String ingredient){
+  onSearch(String ingredient) {
     final queryLower = ingredient.toLowerCase().trim();
     debugPrint('Applying filter for ingredient: "$ingredient"');
     final filteredRecipes = recipeResult!.where((recipe) {
       return recipe.extendedIngredients?.any((extIngredient) {
-        final ingredientName = extIngredient.name?.toLowerCase() ?? '';
-        return ingredientName.contains(queryLower);
-      }) ?? false;
+            final ingredientName = extIngredient.name?.toLowerCase() ?? '';
+            return ingredientName.contains(queryLower);
+          }) ??
+          false;
     }).toList();
-    setRecipeResult(filteredRecipes);
-    update();
+    if (filteredRecipes.isNotEmpty) {
+      setRecipeResult(filteredRecipes);
+      update();
+    } else {
+      debugPrint("Empty array");
+      loadFromCache(showError: false);
+    }
   }
 
   void loadFromCache({required bool showError}) async {
@@ -59,13 +65,14 @@ class HomeController extends BaseController {
     debugPrint("Load Local data");
     if (cachedRecipes.isNotEmpty) {
       setRecipeResult(cachedRecipes);
-      update();
       if (showError) {
-        EasyLoading.showToast("Using cached data. Please check connection for updates.");
+        EasyLoading.showToast(
+            "Using cached data. Please check connection for updates.");
       }
     } else if (showError) {
       EasyLoading.showError("No internet and no cached data.");
     }
+    update();
   }
 
   Future<bool> get isOnline async {
@@ -109,7 +116,7 @@ class HomeController extends BaseController {
     );
   }
 
-  handleRecipesResponse(RecipesResponse response) async{
+  handleRecipesResponse(RecipesResponse response) async {
     if (response.recipes!.isNotEmpty) {
       repository.setAllObjects(response.recipes!);
       await (repository as RepositoryImpl).setLastFetchedTime();
@@ -120,7 +127,7 @@ class HomeController extends BaseController {
     }
   }
 
- isFavorite (Recipe recipe) async {
+  isFavorite(Recipe recipe) async {
     await toggleFavorite(recipe);
     _recipeResult.value = _recipeResult.map((r) {
       if (r.id == recipe.id) {
@@ -128,6 +135,8 @@ class HomeController extends BaseController {
       }
       return r;
     }).toList();
-    loadFromCache(showError: true);
+    update();
+    loadFromCache(showError: false);
+    Get.find<FavoriteController>().loadFavorites();
   }
 }

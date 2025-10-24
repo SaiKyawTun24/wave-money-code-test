@@ -9,17 +9,15 @@ class ImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius:
-      const BorderRadius.vertical(top: Radius.circular(12)),
-      child:CachedNetworkImage(
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
+      child: CachedNetworkImage(
         imageUrl: image,
         fit: BoxFit.cover,
         placeholder: (context, url) => const Center(
-          child:
-          CircularProgressIndicator(strokeWidth: 2),
+          child: CircularProgressIndicator(strokeWidth: 2),
         ),
         errorWidget: (context, url, error) =>
-        const Icon(Icons.broken_image, size: 50),
+            const Icon(Icons.broken_image, size: 50),
       ),
     );
   }

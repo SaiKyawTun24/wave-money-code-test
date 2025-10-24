@@ -22,6 +22,21 @@ class StorageManagerImpl extends StorageManager {
     }
   }
 
+  Future<Box<dynamic>> openBox(String boxName) => _box(boxName);
+
+  Future<void> removeByPrefix(String boxName, String prefix) async {
+    final box = await _box(boxName);
+    final keysToRemove =
+        box.keys.where((key) => key.toString().startsWith(prefix)).toList();
+
+    for (final key in keysToRemove) {
+      await box.delete(key);
+    }
+
+    debugPrint(
+        'Removed ${keysToRemove.length} items with prefix "$prefix" from $boxName.');
+  }
+
   @override
   Future<void> setAllObjects<T>(String boxName, Map<String, T> objects) async {
     final box = await _box(boxName);
