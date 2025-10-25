@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:wave_money_code_test/const/style/style.dart';
 
 class InstructionsHtmlWidget extends StatelessWidget {
   final String instructionsHtml;
@@ -15,7 +16,7 @@ class InstructionsHtmlWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: appBarTextStyle,
         ),
         Html(
           data: instructionsHtml,

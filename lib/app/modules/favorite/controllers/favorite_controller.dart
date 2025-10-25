@@ -20,6 +20,11 @@ class FavoriteController extends BaseController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    loadFavorites();
+    super.onReady();
+  }
 
   Future<void> loadFavorites() async {
     try {

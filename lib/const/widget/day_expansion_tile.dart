@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wave_money_code_test/const/style/style.dart';
 import 'package:wave_money_code_test/const/widget/image_widget.dart';
+import 'package:wave_money_code_test/const/widget/recipe_selection_dialog.dart';
 import '../../app/modules/weekly_plan/controllers/weekly_plan_controller.dart';
+import '../color/color.dart';
 
 class DayExpansionTile extends StatelessWidget {
   final String day;
@@ -27,46 +29,10 @@ class DayExpansionTile extends StatelessWidget {
     showDialog(
       context: Get.context!,
       builder: (ctx) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(
-            'Select Recipe for $day',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: Get.height * 0.6,
-                  child: ListView.builder(
-                    itemCount: favorites.length,
-                    itemBuilder: (ctx, index) {
-                      final recipe = favorites[index];
-                      return Card(
-                        child: ListTile(
-                          title: ImageWidget(image: recipe.image!),
-                          subtitle: Text(
-                            recipe.title!,
-                            style: titleTextStyle,
-                          ),
-                          onTap: () => controller.addMealToPlan(day, recipe),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text('Cancel'),
-            ),
-          ],
+        return RecipeSelectionDialog(
+          day: day,
+          recipes: favorites,
+          onSelected: (recipe, day) => controller.addMealToPlan(day, recipe),
         );
       },
     );
@@ -91,7 +57,7 @@ class DayExpansionTile extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.calendar_month, color: Color(0xFFE94D33)),
+                  Icon(Icons.calendar_month, color: AppColors.redColor),
                   const SizedBox(width: 12),
                   Text(
                     day,
@@ -104,7 +70,7 @@ class DayExpansionTile extends StatelessWidget {
               ),
               Text(
                 '$mealCount recipe${mealCount != 1 ? 's' : ''}',
-                style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                style: subtitleTextStyle,
               ),
             ],
           ),
@@ -129,8 +95,10 @@ class DayExpansionTile extends StatelessWidget {
                         ),
                         title: Text(recipe.title!),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline,
-                              color: Colors.red),
+                          icon: Icon(
+                            Icons.delete_outline,
+                            color: AppColors.redColor,
+                          ),
                           onPressed: () =>
                               controller.removeMealFromPlan(day, recipe),
                         ),
@@ -145,19 +113,20 @@ class DayExpansionTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton.icon(
-                    icon: const Icon(Icons.add, color: Colors.green),
+                    icon: Icon(Icons.add, color: AppColors.greenColor),
                     label: Text(
                       hasPlan ? 'Change Recipe' : 'Add Recipe',
-                      style: const TextStyle(color: Colors.green),
+                      style: addRecipeTextStyle,
                     ),
                     onPressed: _showRecipeSelectionDialog,
                   ),
                   if (hasPlan)
                     TextButton.icon(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red),
-                      label: const Text(
+                      icon:
+                          Icon(Icons.delete_outline, color: AppColors.redColor),
+                      label: Text(
                         'Clear Day',
-                        style: TextStyle(color: Colors.red),
+                        style: clearTextStyle,
                       ),
                       onPressed: () => controller.removeMealsFromDay(day),
                     ),

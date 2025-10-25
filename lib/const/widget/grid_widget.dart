@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wave_money_code_test/const/color/color.dart';
 import '../../app/data/model/recipes.dart';
 import '../../app/routes/app_pages.dart';
 import '../style/style.dart';
@@ -75,7 +76,7 @@ class GridWidget extends StatelessWidget {
                 onPressed: () => onToggleFavorite(recipe),
                 icon: Icon(
                   Icons.favorite,
-                  color: recipe.isFavorite == true ? Colors.red : Colors.grey,
+                  color: recipe.isFavorite == true ? AppColors.redColor : AppColors.subtitleTextColor,
                 ),
               ),
             ),

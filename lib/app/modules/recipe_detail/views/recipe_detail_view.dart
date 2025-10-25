@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../const/color/color.dart';
 import '../../../../const/style/style.dart';
 import '../../../../const/widget/image_widget.dart';
 import '../../../../const/widget/ingredient_widget.dart';
@@ -16,8 +17,13 @@ class RecipeDetailView extends StatelessWidget {
       var recipe = controller.recipe;
       return SafeArea(
         child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
-            title: Text(recipe.title! ?? 'Recipe Detail'),
+            backgroundColor: AppColors.buttonBarColor,
+            title: Text(
+              recipe.title! ?? 'Recipe Detail',
+              style: appBarTextStyle,
+            ),
             centerTitle: true,
           ),
           body: Padding(
@@ -45,8 +51,8 @@ class RecipeDetailView extends StatelessWidget {
                       Icon(
                         Icons.favorite,
                         color: recipe.isFavorite == true
-                            ? Colors.red
-                            : Colors.grey,
+                            ? AppColors.redColor
+                            : AppColors.subtitleTextColor,
                       ),
                     ],
                   ),

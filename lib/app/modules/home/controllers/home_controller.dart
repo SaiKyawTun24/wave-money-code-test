@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:wave_money_code_test/app/modules/favorite/controllers/favorite_controller.dart';
 import 'package:wave_money_code_test/base/base_controller.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../data/model/recipes.dart';
@@ -53,11 +52,11 @@ class HomeController extends BaseController {
     }).toList();
     if (filteredRecipes.isNotEmpty) {
       setRecipeResult(filteredRecipes);
-      update();
     } else {
       debugPrint("Empty array");
       loadFromCache(showError: false);
     }
+    update();
   }
 
   void loadFromCache({required bool showError}) async {
@@ -127,8 +126,7 @@ class HomeController extends BaseController {
     }
   }
 
-  isFavorite(Recipe recipe) async {
-    await toggleFavorite(recipe);
+  void isFavorite(Recipe recipe) async {
     _recipeResult.value = _recipeResult.map((r) {
       if (r.id == recipe.id) {
         return r.copyWith(isFavorite: !r.isFavorite);
@@ -136,7 +134,6 @@ class HomeController extends BaseController {
       return r;
     }).toList();
     update();
-    loadFromCache(showError: false);
-    Get.find<FavoriteController>().loadFavorites();
+    await toggleFavorite(recipe);
   }
 }

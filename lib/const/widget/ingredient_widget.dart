@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../app/data/model/extended_ingredients.dart';
+import '../color/color.dart';
 import '../style/style.dart';
 
 class IngredientWidget extends StatelessWidget {
@@ -41,13 +42,13 @@ class IngredientWidget extends StatelessWidget {
                           child: Center(
                               child:
                                   CircularProgressIndicator(strokeWidth: 2))),
-                      errorWidget: (context, url, error) => const Icon(
+                      errorWidget: (context, url, error) => Icon(
                           Icons.shopping_basket,
                           size: 30,
-                          color: Colors.grey),
+                          color: AppColors.subtitleTextColor),
                     )
-                  : const Icon(Icons.shopping_basket,
-                      size: 30, color: Colors.grey),
+                  : Icon(Icons.shopping_basket,
+                      size: 30, color: AppColors.subtitleTextColor),
             ),
             title: Text(
               ingredient.name ?? 'Unnamed Ingredient',

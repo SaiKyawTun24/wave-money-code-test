@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wave_money_code_test/app/data/model/meal_plan.dart';
 import 'package:wave_money_code_test/app/data/model/recipes.dart';
 import 'package:wave_money_code_test/app/data/repository/repository.dart';
 import '../api_services/api_services.dart';
@@ -77,72 +76,6 @@ class RepositoryImpl extends Repository {
       await storageManager.clear(recipesBox);
     } catch (e) {
       debugPrint('Error clearing cache: $e');
-    }
-  }
-
-  @override
-  Future<List<WeeklyMealPlan>> getAllWeeklyMealPlan() async {
-    try {
-      final weeklyPlan =
-      await storageManager.getAllHiveObjects<WeeklyMealPlan>(mealPlanBoxName);
-      return weeklyPlan;
-    } catch (e) {
-      debugPrint('Error fetching weekly meal plan: $e');
-      return [];
-    }
-  }
-
-  @override
-  Future<List<WeeklyMealPlan>> setWeeklyMealPlan(
-      List<WeeklyMealPlan> weeklyMealPlan) async {
-    try {
-      for (var plan in weeklyMealPlan) {
-        final key = '${plan.day}_${plan.recipe.id}';
-        await storageManager.setHiveObject<WeeklyMealPlan>(
-          mealPlanBoxName,
-          key,
-          plan,
-        );
-      }
-      return weeklyMealPlan;
-    } catch (e) {
-      debugPrint('Error setting weekly meal plan: $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> removeWeeklyPlanEntry(String day, int recipeId) async {
-    try {
-      final key = '${day}_$recipeId';
-      await storageManager.remove(mealPlanBoxName, key);
-      debugPrint('Removed meal plan entry for $day - recipe $recipeId.');
-    } catch (e) {
-      debugPrint('Error removing weekly meal plan entry for $day: $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> clearDay(String day) async {
-    try {
-      await (storageManager as StorageManagerImpl)
-          .removeByPrefix(mealPlanBoxName, day);
-      debugPrint('Cleared all recipes for $day.');
-    } catch (e) {
-      debugPrint('Error clearing day $day: $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> clearWeeklyPlan() async {
-    try {
-      await storageManager.clear(mealPlanBoxName);
-      debugPrint('Cleared entire weekly meal plan.');
-    } catch (e) {
-      debugPrint('Error clearing weekly plan: $e');
-      rethrow;
     }
   }
 }
